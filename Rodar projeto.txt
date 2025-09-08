@@ -1,0 +1,55 @@
+Rodar o backend
+Abra o terminal na pasta do backend:
+
+cd C:\Users\ADM\Desktop\Projeto Impacta\backend
+
+
+Instale as dependências (uma vez só):
+
+npm install
+
+
+Inicie o servidor:
+
+node server.js
+
+
+Deve aparecer:
+
+Servidor rodando na porta 5000 🚀
+Conectado ao MySQL com sucesso!
+
+
+2️⃣ Rodar o frontend
+
+Abra outro terminal na pasta do frontend:
+
+cd C:\Users\ADM\Desktop\Projeto Impacta\frontend
+
+
+Instale as dependências (uma vez só):
+
+npm install
+
+
+Inicie o frontend:
+
+npm start
+
+
+O navegador vai abrir em:
+
+http://localhost:3000/
+
+
+3️⃣ Testar o cadastro
+
+Preencha o formulário e clique em Cadastrar-se.
+
+Verifique no MySQL Workbench:
+
+USE cadastro;
+SELECT * FROM clientes;
+
+
+O cliente cadastrado deve aparecer na tabela.

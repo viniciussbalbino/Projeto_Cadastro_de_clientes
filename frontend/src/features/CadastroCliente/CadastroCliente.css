@@ -1,0 +1,84 @@
+.form-cadastro-cliente {
+  width: 20%;
+  margin: auto;
+  color: rgb(7, 7, 7);
+  padding: 5px;
+  border-radius: 15px;
+  font-size: 20px;
+  position: absolute;
+}
+
+.linha-formulario {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  color: rgb(5, 5, 5);
+  text-align: left;
+  width: 90%;
+  font-size: 13px;
+}
+
+.linha-formulario > input {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  padding: 5px;
+  color: rgb(14, 13, 13);
+  text-align: left;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid rgb(215, 239, 247);
+}
+
+.form-cadastro-cliente {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #b3dffc;
+  padding: 5px;
+  border-radius: 15px;
+  width: 20%;
+  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.botao-confirmar {
+  background: linear-gradient(#bcdbfd, #0557b4);
+  width: 100%;
+  padding: 10px;
+  color: rgb(250, 249, 249);
+  font-size: 25px;
+  text-align: center;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.botao-confirmar:hover {
+  background: linear-gradient(#030b7a, #e2eff0);
+}
+
+.linha-formulario-titulo {
+  border: 3px solid #fdfdff;
+  background-color: #b3dffc;
+  text-align: center;
+  color: black;
+  border-radius: 15px;
+}
+
+.cabecalho {
+  border: 1px solid rgb(250, 250, 250);
+  padding: 10px;
+  text-align: center;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.sexo {
+  text-align: left;
+  position: relative;
+  font-size: 13px;
+  padding: 10px;
+}

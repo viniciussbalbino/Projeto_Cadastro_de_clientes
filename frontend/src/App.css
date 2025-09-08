@@ -1,0 +1,11 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(#fafafc, #81b3f5, #0557b4);
+  height: 100vh; /* garante que o gradiente ocupe a tela toda */
+  margin: 0;
+}
+
+.Titulo {
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
