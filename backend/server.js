@@ -106,6 +106,63 @@ app.get("/clientes/buscar", (req, res) => {
   });
 });
 
+// Atualizar cliente por ID
+app.put("/clientes/:id", (req, res) => {
+  const { id } = req.params;
+  const {
+    nome_completo,
+    sexo,
+    data_nascimento,
+    email,
+    telefone,
+    cidade,
+    estado,
+    endereco,
+  } = req.body;
+
+  const sql = `
+    UPDATE clientes
+    SET nome_completo = ?, sexo = ?, data_nascimento = ?, email = ?, telefone = ?, cidade = ?, estado = ?, endereco = ?
+    WHERE id = ?
+  `;
+
+  db.query(
+    sql,
+    [nome_completo, sexo, data_nascimento, email, telefone, cidade, estado, endereco, id],
+    (err, result) => {
+      if (err) {
+        console.error("Erro ao atualizar cliente:", err);
+        return res.status(500).json(err);
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Cliente não encontrado" });
+      }
+
+      res.json({ message: "Cliente atualizado com sucesso!" });
+    }
+  );
+});
+
+// Excluir cliente por ID
+app.delete("/clientes/:id", (req, res) => {
+  const { id } = req.params;
+
+  const sql = "DELETE FROM clientes WHERE id = ?";
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Erro ao excluir cliente:", err);
+      return res.status(500).json({ error: "Erro ao excluir cliente" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Cliente não encontrado" });
+    }
+
+    res.json({ message: "Cliente excluído com sucesso" });
+  });
+});
+
 // Rodar servidor
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT} 🚀`));
