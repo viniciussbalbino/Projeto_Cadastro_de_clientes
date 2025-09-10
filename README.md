@@ -9,28 +9,21 @@
 Projeto de exemplo para **Cadastro de Clientes**, utilizando **React** no front-end, **Node.js/Express** no back-end e **MySQL** como banco de dados.  
 O projeto demonstra funcionalidades de cadastro, listagem, atualização e exclusão de clientes.
 
-##  Como rodar
+## 🚀 Como rodar
 
-1. Clone o repositório:  
+1. Clone o repositório e instale dependências:
 ```bash
 git clone <URL_DO_REPOSITORIO>
-Entre nas pastas do back-end e front-end e instale as dependências:
+cd backend && npm install
+cd ../frontend && npm install
+Configure o banco MySQL (crie o banco e ajuste as credenciais no back-end).
+
+Inicie o projeto:
 
 bash
 Copiar código
-cd backend
-npm install
+cd backend && node server.js
+cd ../frontend && npm start
 
-cd ../frontend
-npm install
-Configure o banco MySQL (crie o banco e ajuste as credenciais no arquivo de configuração do back-end).
-
-Rode o back-end e front-end:
-
-bash
-Copiar código
-cd backend
-npm start
-
-cd ../frontend
-npm start
+📝 Licença
+MIT License © Vinicius Balbino
