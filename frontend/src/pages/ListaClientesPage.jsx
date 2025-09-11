@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function ListaClientes() {
+function ListaClientesPage() {
   const [clientes, setClientes] = useState([]);
   const [busca, setBusca] = useState("");
   const [editandoId, setEditandoId] = useState(null);
   const [clienteEditado, setClienteEditado] = useState({});
+
+  const navigate = useNavigate();
 
   // Cor do botão excluir
   const corBotaoExcluir = "red";
@@ -13,7 +16,6 @@ function ListaClientes() {
     fetchClientes();
   }, []);
 
-  // Buscar clientes do back
   const fetchClientes = async () => {
     try {
       const res = await fetch("http://localhost:5000/clientes");
@@ -26,15 +28,12 @@ function ListaClientes() {
     }
   };
 
-  // Excluir cliente
   const excluirCliente = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este cliente?")) return;
-
     try {
       const res = await fetch(`http://localhost:5000/clientes/${id}`, {
         method: "DELETE",
       });
-
       if (res.ok) {
         alert("Cliente excluído com sucesso!");
         fetchClientes();
@@ -46,35 +45,27 @@ function ListaClientes() {
     }
   };
 
-  // Iniciar edição
   const iniciarEdicao = (cliente) => {
     setEditandoId(cliente.id);
-    // Cria uma cópia do cliente para edição
-    setClienteEditado({ ...cliente });
-    // Ajusta data para formato YYYY-MM-DD
-    if (cliente.data_nascimento)
-      setClienteEditado((prev) => ({
-        ...prev,
-        data_nascimento: new Date(cliente.data_nascimento)
-          .toISOString()
-          .split("T")[0],
-      }));
+    setClienteEditado({
+      ...cliente,
+      data_nascimento: cliente.data_nascimento
+        ? new Date(cliente.data_nascimento).toISOString().split("T")[0]
+        : "",
+    });
   };
 
-  // Cancelar edição
   const cancelarEdicao = () => {
     setEditandoId(null);
     setClienteEditado({});
   };
 
-  // Salvar edição
   const salvarEdicao = async () => {
     if (!clienteEditado.nome_completo || !clienteEditado.sexo) {
       alert("Preencha os campos obrigatórios: Nome e Sexo");
       return;
     }
 
-    // Formata data corretamente para MySQL (YYYY-MM-DD)
     const dataFormatada = clienteEditado.data_nascimento
       ? new Date(clienteEditado.data_nascimento).toISOString().split("T")[0]
       : null;
@@ -87,13 +78,11 @@ function ListaClientes() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-
       if (!res.ok) {
         const error = await res.json();
         alert("Erro ao atualizar cliente: " + (error.error || res.statusText));
         return;
       }
-
       alert("Cliente atualizado com sucesso!");
       fetchClientes();
       cancelarEdicao();
@@ -103,16 +92,28 @@ function ListaClientes() {
     }
   };
 
-  // Filtrar clientes pelo nome, email ou cidade
   const clientesFiltrados = clientes.filter((c) =>
-    (c.nome_completo + c.email + c.cidade)
-      .toLowerCase()
-      .includes(busca.toLowerCase())
+    (c.nome_completo + c.email + c.cidade).toLowerCase().includes(busca.toLowerCase())
   );
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Lista de Clientes</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>Lista de Clientes</h2>
+        <button
+          onClick={() => navigate("/novo-cliente")}
+          style={{
+            padding: "8px 20px",
+            background: "black",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Novo Cliente
+        </button>
+      </div>
 
       <input
         type="text"
@@ -120,7 +121,7 @@ function ListaClientes() {
         value={busca}
         onChange={(e) => setBusca(e.target.value)}
         style={{
-          marginBottom: "15px",
+          margin: "15px 0",
           padding: "8px",
           width: "100%",
           maxWidth: "400px",
@@ -135,11 +136,7 @@ function ListaClientes() {
         <table
           border="1"
           cellPadding="8"
-          style={{
-            borderCollapse: "collapse",
-            width: "100%",
-            textAlign: "left",
-          }}
+          style={{ borderCollapse: "collapse", width: "100%", textAlign: "left" }}
         >
           <thead style={{ backgroundColor: "#f2f2f2" }}>
             <tr>
@@ -152,7 +149,6 @@ function ListaClientes() {
               <th>Cidade</th>
               <th>Estado</th>
               <th>Endereço</th>
-              <th>Data Cadastro</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -278,11 +274,6 @@ function ListaClientes() {
                   )}
                 </td>
                 <td>
-                  {c.data_cadastro
-                    ? new Date(c.data_cadastro).toLocaleDateString("pt-BR")
-                    : ""}
-                </td>
-                <td>
                   {editandoId === c.id ? (
                     <>
                       <button
@@ -318,7 +309,7 @@ function ListaClientes() {
                       <button
                         onClick={() => iniciarEdicao(c)}
                         style={{
-                          background: "orange",
+                          background: "black",
                           color: "white",
                           border: "none",
                           padding: "5px 10px",
@@ -338,14 +329,9 @@ function ListaClientes() {
                           padding: "5px 10px",
                           borderRadius: "5px",
                           cursor: "pointer",
-                          transition: "0.3s",
                         }}
-                        onMouseOver={(e) =>
-                          (e.currentTarget.style.background = "#f71919ff")
-                        }
-                        onMouseOut={(e) =>
-                          (e.currentTarget.style.background = corBotaoExcluir)
-                        }
+                        onMouseOver={(e) => (e.currentTarget.style.background = "#f71919ff")}
+                        onMouseOut={(e) => (e.currentTarget.style.background = corBotaoExcluir)}
                       >
                         Excluir
                       </button>
@@ -361,4 +347,4 @@ function ListaClientes() {
   );
 }
 
-export default ListaClientes;
+export default ListaClientesPage;

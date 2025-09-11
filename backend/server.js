@@ -30,6 +30,35 @@ app.get("/", (req, res) => {
   res.send("API funcionando 🚀");
 });
 
+// ========================
+// LOGIN
+// ========================
+app.post("/login", (req, res) => {
+  const { nome, senha } = req.body;
+
+  if (!nome || !senha) {
+    return res.status(400).json({ message: "Nome e senha são obrigatórios" });
+  }
+
+  const sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
+  db.query(sql, [nome, senha], (err, results) => {
+    if (err) {
+      console.error("Erro ao consultar usuário:", err);
+      return res.status(500).json({ message: "Erro no servidor" });
+    }
+
+    if (results.length === 0) {
+      return res.status(401).json({ message: "Usuário ou senha incorretos" });
+    }
+
+    res.json({ message: "Login realizado com sucesso!", usuario: results[0] });
+  });
+});
+
+// ========================
+// CLIENTES
+// ========================
+
 // Listar todos os clientes
 app.get("/clientes", (req, res) => {
   db.query("SELECT * FROM clientes", (err, results) => {
@@ -71,39 +100,6 @@ app.post("/clientes", (req, res) => {
       res.json({ id: result.insertId, ...req.body });
     }
   );
-});
-
-// Buscar clientes com filtros
-app.get("/clientes/buscar", (req, res) => {
-  const { nome, cidade, estado, email } = req.query;
-
-  let query = "SELECT * FROM clientes WHERE 1=1";
-  const params = [];
-
-  if (nome) {
-    query += " AND nome_completo LIKE ?";
-    params.push(`%${nome}%`);
-  }
-  if (cidade) {
-    query += " AND cidade LIKE ?";
-    params.push(`%${cidade}%`);
-  }
-  if (estado) {
-    query += " AND estado LIKE ?";
-    params.push(`%${estado}%`);
-  }
-  if (email) {
-    query += " AND email LIKE ?";
-    params.push(`%${email}%`);
-  }
-
-  db.query(query, params, (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar clientes:", err);
-      return res.status(500).json(err);
-    }
-    res.json(results);
-  });
 });
 
 // Atualizar cliente por ID
@@ -163,6 +159,41 @@ app.delete("/clientes/:id", (req, res) => {
   });
 });
 
-// Rodar servidor
+// Buscar clientes com filtros
+app.get("/clientes/buscar", (req, res) => {
+  const { nome, cidade, estado, email } = req.query;
+
+  let query = "SELECT * FROM clientes WHERE 1=1";
+  const params = [];
+
+  if (nome) {
+    query += " AND nome_completo LIKE ?";
+    params.push(`%${nome}%`);
+  }
+  if (cidade) {
+    query += " AND cidade LIKE ?";
+    params.push(`%${cidade}%`);
+  }
+  if (estado) {
+    query += " AND estado LIKE ?";
+    params.push(`%${estado}%`);
+  }
+  if (email) {
+    query += " AND email LIKE ?";
+    params.push(`%${email}%`);
+  }
+
+  db.query(query, params, (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar clientes:", err);
+      return res.status(500).json(err);
+    }
+    res.json(results);
+  });
+});
+
+// ========================
+// RODAR SERVIDOR
+// ========================
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT} 🚀`));

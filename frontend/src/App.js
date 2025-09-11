@@ -1,23 +1,17 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import ListaClientesPage from "./pages/ListaClientesPage";
 import NovoClientePage from "./pages/NovoClientePage";
-import ListaDeClientes from "./pages/ListaClientes";
 
 function App() {
   return (
-    <Router>
-      <nav className="menu">
-        <Link className="menu-btn" to="/">Novo Cliente</Link>
-        <Link className="menu-btn" to="/clientes">Lista de Clientes</Link>
-      </nav>
-
-      <section className="fundo">
-        <Routes>
-          <Route path="/" element={<NovoClientePage />} />
-          <Route path="/clientes" element={<ListaDeClientes />} />
-        </Routes>
-      </section>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/clientes" element={<ListaClientesPage />} />
+        <Route path="/novo-cliente" element={<NovoClientePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
